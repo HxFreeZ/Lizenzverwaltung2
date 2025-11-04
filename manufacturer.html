@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lizenzverwaltung · Hersteller</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1 data-manufacturer-title>Hersteller</h1>
+        <p data-admin-status>Admin-Modus inaktiv</p>
+      </div>
+      <div class="table-actions">
+        <a class="button" href="index.html" data-home-link>Zur Übersicht</a>
+        <button type="button" data-admin-button>Admin-Login</button>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="table-actions">
+          <form data-add-column-form>
+            <fieldset disabled>
+              <label for="column-name">Neue Spalte</label>
+              <input
+                type="text"
+                id="column-name"
+                name="columnName"
+                placeholder="z. B. Support-Ende"
+                required
+              />
+              <button type="submit">Spalte hinzufügen</button>
+            </fieldset>
+          </form>
+
+          <button type="button" data-add-row>Zeile hinzufügen</button>
+        </div>
+      </section>
+
+      <section>
+        <div class="feedback" data-feedback hidden></div>
+        <div class="table-wrapper">
+          <table>
+            <thead data-table-head></thead>
+            <tbody data-table-body></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <dialog data-admin-modal>
+      <form data-admin-form method="dialog">
+        <h2>Admin-Login</h2>
+        <label for="admin-password">Passwort</label>
+        <input
+          type="password"
+          id="admin-password"
+          name="password"
+          placeholder="Passwort eingeben"
+          required
+        />
+        <div class="table-actions">
+          <button type="submit">Anmelden</button>
+          <button type="button" class="button button-danger" data-admin-cancel>Abbrechen</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script type="module" src="assets/js/manufacturer.js"></script>
+  </body>
+</html>

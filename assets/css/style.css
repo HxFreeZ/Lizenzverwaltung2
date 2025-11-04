@@ -1,0 +1,282 @@
+:root {
+  color-scheme: light dark;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5;
+  font-size: 16px;
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --danger: #dc2626;
+  --background: #f4f4f5;
+  --foreground: #18181b;
+  --border: #d4d4d8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+header {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+main {
+  padding: 2rem 1.5rem 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  gap: 2rem;
+}
+
+section {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 15px 30px rgba(15, 23, 42, 0.1);
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+label {
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 1rem;
+}
+
+input:disabled,
+button:disabled,
+textarea:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.button,
+button {
+  border: none;
+  background: var(--primary);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-decoration: none;
+  transition: background 150ms ease;
+}
+
+.button:hover,
+button:hover {
+  background: var(--primary-dark);
+}
+
+.button.button-danger,
+button.button-danger {
+  background: var(--danger);
+}
+
+.button.button-danger:hover,
+button.button-danger:hover {
+  background: #b91c1c;
+}
+
+.manufacturer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.manufacturer-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  background: linear-gradient(145deg, white, #f9fafb);
+  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
+}
+
+.manufacturer-card h3 {
+  margin: 0 0 0.5rem;
+}
+
+.manufacturer-card .actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+dialog::backdrop {
+  background: rgba(15, 23, 42, 0.45);
+}
+
+dialog {
+  border: none;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: min(400px, 80vw);
+  box-shadow: 0 18px 35px rgba(15, 23, 42, 0.2);
+}
+
+dialog form {
+  display: grid;
+  gap: 1rem;
+}
+
+.feedback {
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.feedback[data-variant="success"] {
+  background: #dcfce7;
+  color: #14532d;
+  border-color: #86efac;
+}
+
+.feedback[data-variant="error"] {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
+.feedback[data-variant="info"] {
+  background: #e0f2fe;
+  color: #0c4a6e;
+  border-color: #7dd3fc;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.75rem 0.85rem;
+  text-align: left;
+  background: white;
+}
+
+th {
+  background: #f1f5f9;
+  font-size: 0.95rem;
+}
+
+td[contenteditable="true"] {
+  background: #fef9c3;
+}
+
+td:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.icon-button {
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.table-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+@media (max-width: 720px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .manufacturer-card .actions {
+    flex-direction: column;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tr {
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem;
+    background: white;
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+  }
+
+  td {
+    border: none;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  td::before {
+    position: absolute;
+    top: 0.75rem;
+    left: 1rem;
+    width: calc(50% - 1rem);
+    white-space: nowrap;
+    font-weight: 600;
+  }
+}
