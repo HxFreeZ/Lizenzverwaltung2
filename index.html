@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lizenzverwaltung · Übersicht</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div>
+        <h1>Lizenzverwaltung</h1>
+        <p class="admin-status" data-admin-status>Admin-Modus inaktiv</p>
+      </div>
+      <div class="admin-actions">
+        <button type="button" class="primary-button" data-admin-button>Admin-Login</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <section class="intro">
+        <h2>Willkommen zur Lizenzverwaltung</h2>
+        <p>
+          Behalten Sie Ihre Softwarelizenzen pro Hersteller im Blick. Aktivieren Sie den
+          Admin-Modus, um Hersteller sowie Spalten und Zeilen auf den Detailseiten zu
+          verwalten. Das Standard-Passwort lautet <code>admin123</code> und kann im
+          Quellcode angepasst werden.
+        </p>
+      </section>
+
+      <section class="table-section">
+        <h2>Herstellerübersicht</h2>
+        <div class="feedback" data-feedback hidden role="status"></div>
+        <div class="manufacturer-list" data-manufacturer-list></div>
+      </section>
+
+      <section class="admin-panel">
+        <h2>Hersteller hinzufügen</h2>
+        <form data-new-manufacturer-form>
+          <fieldset class="admin-form" disabled>
+            <label for="manufacturer-name">Name des Herstellers</label>
+            <input
+              type="text"
+              id="manufacturer-name"
+              name="manufacturerName"
+              placeholder="z. B. Contoso GmbH"
+              data-new-manufacturer-name
+              required
+            />
+            <div class="table-actions">
+              <button type="submit" class="primary-button">Hersteller speichern</button>
+            </div>
+          </fieldset>
+        </form>
+        <p class="muted">
+          Nur angemeldete Administratoren können Hersteller hinzufügen oder löschen.
+        </p>
+      </section>
+    </main>
+
+    <dialog class="dialog" data-admin-modal>
+      <form class="dialog-form" data-admin-form method="dialog">
+        <h2>Admin-Login</h2>
+        <label for="admin-password">Passwort</label>
+        <input
+          type="password"
+          id="admin-password"
+          name="password"
+          placeholder="Passwort eingeben"
+          required
+        />
+        <div class="dialog-actions">
+          <button type="submit" class="primary-button">Anmelden</button>
+          <button type="button" class="secondary-button" data-admin-cancel>Abbrechen</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script type="module" src="assets/js/index.js"></script>
+  </body>
+</html>
