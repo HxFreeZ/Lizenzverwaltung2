@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lizenzverwaltung · Übersicht</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Lizenzverwaltung</h1>
+        <p data-admin-status>Admin-Modus inaktiv</p>
+      </div>
+      <div class="table-actions">
+        <button type="button" data-admin-button>Admin-Login</button>
+        <a class="button" href="#hilfe">Hilfe</a>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <h2>Herstellerübersicht</h2>
+        <div class="feedback" data-feedback hidden></div>
+        <div class="manufacturer-grid" data-manufacturer-list></div>
+      </section>
+
+      <section>
+        <h2>Hersteller hinzufügen</h2>
+        <form data-new-manufacturer-form>
+          <fieldset disabled>
+            <label for="manufacturer-name">Name des Herstellers</label>
+            <input
+              type="text"
+              id="manufacturer-name"
+              name="manufacturerName"
+              placeholder="z. B. Contoso GmbH"
+              data-new-manufacturer-name
+              required
+            />
+            <button type="submit">Hersteller speichern</button>
+          </fieldset>
+        </form>
+      </section>
+
+      <section id="hilfe">
+        <h2>Hilfe</h2>
+        <p>
+          Aktivieren Sie den Admin-Modus, um neue Hersteller anzulegen, vorhandene zu
+          löschen oder in den Detailseiten Spalten und Zeilen zu bearbeiten. Das
+          Standard-Passwort lautet <code>admin123</code> und kann im Quellcode angepasst
+          werden.
+        </p>
+      </section>
+    </main>
+
+    <dialog data-admin-modal>
+      <form data-admin-form method="dialog">
+        <h2>Admin-Login</h2>
+        <label for="admin-password">Passwort</label>
+        <input
+          type="password"
+          id="admin-password"
+          name="password"
+          placeholder="Passwort eingeben"
+          required
+        />
+        <div class="table-actions">
+          <button type="submit">Anmelden</button>
+          <button type="button" class="button button-danger" data-admin-cancel>Abbrechen</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script type="module" src="assets/js/index.js"></script>
+  </body>
+</html>
