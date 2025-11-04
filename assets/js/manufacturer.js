@@ -11,7 +11,6 @@ import {
 const params = new URLSearchParams(window.location.search);
 const manufacturerId = params.get('id');
 const title = document.querySelector('[data-manufacturer-title]');
-const breadcrumbTitle = document.querySelector('[data-breadcrumb-title]');
 const tableHead = document.querySelector('[data-table-head]');
 const tableBody = document.querySelector('[data-table-body]');
 const addColumnForm = document.querySelector('[data-add-column-form]');
@@ -30,16 +29,8 @@ let feedbackTimer;
 
 if (!manufacturer) {
   title.textContent = 'Hersteller nicht gefunden';
-  if (breadcrumbTitle) {
-    breadcrumbTitle.textContent = 'Unbekannter Hersteller';
-  }
-  const main = document.querySelector('main');
-  if (main) {
-    main.innerHTML = '<p class="empty-state">Bitte zur Übersicht zurückkehren und einen gültigen Hersteller wählen.</p>';
-  }
-  if (homeLink) {
-    homeLink.focus();
-  }
+  document.querySelector('main').innerHTML = '<p>Bitte zur Übersicht zurückkehren und einen gültigen Hersteller wählen.</p>';
+  homeLink.focus();
 } else {
   normalizeRows();
   renderAll();
@@ -75,52 +66,45 @@ adminForm.addEventListener('submit', (event) => {
   }
 });
 
-if (addColumnForm) {
-  addColumnForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    if (!manufacturer) return;
-    if (!isAdmin()) {
-      showFeedback('Nur Admins können Spalten hinzufügen.', 'error');
-      return;
-    }
+addColumnForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (!isAdmin()) {
+    showFeedback('Nur Admins können Spalten hinzufügen.', 'error');
+    return;
+  }
 
-    const name = new FormData(addColumnForm).get('columnName').trim();
-    if (!name) {
-      showFeedback('Bitte einen Spaltennamen eingeben.', 'error');
-      return;
-    }
+  const name = new FormData(addColumnForm).get('columnName').trim();
+  if (!name) {
+    showFeedback('Bitte einen Spaltennamen eingeben.', 'error');
+    return;
+  }
 
-    const newColumn = { id: generateId(), name };
-    manufacturer.columns.push(newColumn);
-    for (const row of manufacturer.rows) {
-      row.cells.push({ columnId: newColumn.id, value: '' });
-    }
-    updateManufacturerData();
-    addColumnForm.reset();
-    showFeedback(`Spalte "${name}" hinzugefügt.`, 'success');
-  });
-}
+  const newColumn = { id: generateId(), name };
+  manufacturer.columns.push(newColumn);
+  for (const row of manufacturer.rows) {
+    row.cells.push({ columnId: newColumn.id, value: '' });
+  }
+  updateManufacturerData();
+  addColumnForm.reset();
+  showFeedback(`Spalte "${name}" hinzugefügt.`, 'success');
+});
 
-if (addRowButton) {
-  addRowButton.addEventListener('click', () => {
-    if (!manufacturer) return;
-    if (!isAdmin()) {
-      showFeedback('Nur Admins können Zeilen hinzufügen.', 'error');
-      return;
-    }
+addRowButton.addEventListener('click', () => {
+  if (!isAdmin()) {
+    showFeedback('Nur Admins können Zeilen hinzufügen.', 'error');
+    return;
+  }
 
-    const newRow = {
-      id: generateId(),
-      cells: manufacturer.columns.map((column) => ({ columnId: column.id, value: '' }))
-    };
-    manufacturer.rows.push(newRow);
-    updateManufacturerData();
-    showFeedback('Neue Zeile erstellt.', 'success');
-  });
-}
+  const newRow = {
+    id: generateId(),
+    cells: manufacturer.columns.map((column) => ({ columnId: column.id, value: '' }))
+  };
+  manufacturer.rows.push(newRow);
+  updateManufacturerData();
+  showFeedback('Neue Zeile erstellt.', 'success');
+});
 
 tableBody.addEventListener('input', (event) => {
-  if (!manufacturer) return;
   const cellElement = event.target.closest('[data-cell]');
   if (!cellElement) return;
   const { rowId, columnId } = cellElement.dataset;
@@ -136,7 +120,6 @@ tableBody.addEventListener('input', (event) => {
 });
 
 tableHead.addEventListener('click', (event) => {
-  if (!manufacturer) return;
   const button = event.target.closest('[data-remove-column]');
   if (!button) return;
   if (!isAdmin()) {
@@ -145,7 +128,6 @@ tableHead.addEventListener('click', (event) => {
   }
   const columnId = button.dataset.columnId;
   const column = manufacturer.columns.find((c) => c.id === columnId);
-  if (!column) return;
   if (!confirm(`Spalte "${column.name}" wirklich löschen?`)) {
     return;
   }
@@ -158,7 +140,6 @@ tableHead.addEventListener('click', (event) => {
 });
 
 tableBody.addEventListener('click', (event) => {
-  if (!manufacturer) return;
   const button = event.target.closest('[data-remove-row]');
   if (!button) return;
   if (!isAdmin()) {
@@ -176,14 +157,11 @@ tableBody.addEventListener('click', (event) => {
 
 function renderAll() {
   title.textContent = manufacturer.name;
-  if (breadcrumbTitle) {
-    breadcrumbTitle.textContent = manufacturer.name;
-  }
   updateAdminUI();
+  renderTable();
 }
 
 function renderTable() {
-  const admin = isAdmin();
   tableHead.innerHTML = '';
   tableBody.innerHTML = '';
 
@@ -191,7 +169,7 @@ function renderTable() {
   for (const column of manufacturer.columns) {
     const th = document.createElement('th');
     th.textContent = column.name;
-    if (admin) {
+    if (isAdmin()) {
       const removeButton = document.createElement('button');
       removeButton.type = 'button';
       removeButton.textContent = '✕';
@@ -204,7 +182,7 @@ function renderTable() {
     headerRow.appendChild(th);
   }
   const actionsTh = document.createElement('th');
-  actionsTh.textContent = admin ? 'Aktionen' : 'Status';
+  actionsTh.textContent = 'Aktionen';
   headerRow.appendChild(actionsTh);
   tableHead.appendChild(headerRow);
 
@@ -216,23 +194,21 @@ function renderTable() {
       td.dataset.cell = '';
       td.dataset.rowId = row.id;
       td.dataset.columnId = column.id;
-      td.contentEditable = admin;
-      td.classList.toggle('editable-cell', admin);
+      td.contentEditable = isAdmin();
       td.textContent = cell.value;
       tr.appendChild(td);
     }
     const actionsTd = document.createElement('td');
-    if (admin) {
+    if (isAdmin()) {
       const removeButton = document.createElement('button');
       removeButton.type = 'button';
-      removeButton.className = 'primary-button danger-button';
+      removeButton.className = 'button button-danger';
       removeButton.dataset.removeRow = '';
       removeButton.dataset.rowId = row.id;
       removeButton.textContent = 'Zeile löschen';
       actionsTd.appendChild(removeButton);
     } else {
-      actionsTd.textContent = '—';
-      actionsTd.classList.add('muted');
+      actionsTd.textContent = '-';
     }
     tr.appendChild(actionsTd);
     tableBody.appendChild(tr);
@@ -242,7 +218,6 @@ function renderTable() {
     const emptyRow = document.createElement('tr');
     const emptyCell = document.createElement('td');
     emptyCell.colSpan = manufacturer.columns.length + 1;
-    emptyCell.className = 'empty-state';
     emptyCell.textContent = 'Noch keine Zeilen vorhanden.';
     emptyRow.appendChild(emptyCell);
     tableBody.appendChild(emptyRow);
@@ -250,21 +225,11 @@ function renderTable() {
 }
 
 function updateAdminUI() {
-  if (!manufacturer) {
-    adminStatus.textContent = 'Admin-Modus inaktiv';
-    adminButton.textContent = 'Admin-Login';
-    return;
-  }
   const admin = isAdmin();
   adminStatus.textContent = admin ? 'Admin-Modus aktiv' : 'Admin-Modus inaktiv';
   adminButton.textContent = admin ? 'Admin-Modus beenden' : 'Admin-Login';
-  const fieldset = addColumnForm.querySelector('fieldset');
-  if (fieldset) {
-    fieldset.disabled = !admin;
-  }
-  if (addRowButton) {
-    addRowButton.disabled = !admin;
-  }
+  addColumnForm.querySelector('fieldset').disabled = !admin;
+  addRowButton.disabled = !admin;
   renderTable();
 }
 
@@ -292,7 +257,6 @@ function normalizeRows() {
 }
 
 function showFeedback(message, variant) {
-  if (!feedback) return;
   if (feedbackTimer) {
     clearTimeout(feedbackTimer);
   }

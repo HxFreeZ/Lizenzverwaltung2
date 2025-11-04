@@ -7,48 +7,42 @@
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
-    <header class="site-header">
+    <header>
       <div>
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-          <a href="index.html">Übersicht</a>
-          <span aria-hidden="true">/</span>
-          <span data-breadcrumb-title>Hersteller</span>
-        </nav>
         <h1 data-manufacturer-title>Hersteller</h1>
-        <p class="admin-status" data-admin-status>Admin-Modus inaktiv</p>
+        <p data-admin-status>Admin-Modus inaktiv</p>
       </div>
-      <div class="admin-actions">
-        <a href="index.html" class="secondary-button" data-home-link>Zur Übersicht</a>
-        <button type="button" class="primary-button" data-admin-button>Admin-Login</button>
+      <div class="table-actions">
+        <a class="button" href="index.html" data-home-link>Zur Übersicht</a>
+        <button type="button" data-admin-button>Admin-Login</button>
       </div>
     </header>
 
-    <main class="content">
-      <section class="table-section">
-        <h2>Tabellenstruktur</h2>
-        <form data-add-column-form>
-          <fieldset class="admin-form" disabled>
-            <label for="column-name">Neue Spalte</label>
-            <input
-              type="text"
-              id="column-name"
-              name="columnName"
-              placeholder="z. B. Support-Ende"
-              required
-            />
-            <div class="table-actions">
-              <button type="submit" class="primary-button">Spalte hinzufügen</button>
-              <button type="button" class="secondary-button" data-add-row>Zeile hinzufügen</button>
-            </div>
-          </fieldset>
-        </form>
+    <main>
+      <section>
+        <div class="table-actions">
+          <form data-add-column-form>
+            <fieldset disabled>
+              <label for="column-name">Neue Spalte</label>
+              <input
+                type="text"
+                id="column-name"
+                name="columnName"
+                placeholder="z. B. Support-Ende"
+                required
+              />
+              <button type="submit">Spalte hinzufügen</button>
+            </fieldset>
+          </form>
+
+          <button type="button" data-add-row>Zeile hinzufügen</button>
+        </div>
       </section>
 
-      <section class="table-section">
-        <h2>Lizenztabelle</h2>
-        <div class="feedback" data-feedback hidden role="status"></div>
+      <section>
+        <div class="feedback" data-feedback hidden></div>
         <div class="table-wrapper">
-          <table id="licenseTable">
+          <table>
             <thead data-table-head></thead>
             <tbody data-table-body></tbody>
           </table>
@@ -56,8 +50,8 @@
       </section>
     </main>
 
-    <dialog class="dialog" data-admin-modal>
-      <form class="dialog-form" data-admin-form method="dialog">
+    <dialog data-admin-modal>
+      <form data-admin-form method="dialog">
         <h2>Admin-Login</h2>
         <label for="admin-password">Passwort</label>
         <input
@@ -67,9 +61,9 @@
           placeholder="Passwort eingeben"
           required
         />
-        <div class="dialog-actions">
-          <button type="submit" class="primary-button">Anmelden</button>
-          <button type="button" class="secondary-button" data-admin-cancel>Abbrechen</button>
+        <div class="table-actions">
+          <button type="submit">Anmelden</button>
+          <button type="button" class="button button-danger" data-admin-cancel>Abbrechen</button>
         </div>
       </form>
     </dialog>

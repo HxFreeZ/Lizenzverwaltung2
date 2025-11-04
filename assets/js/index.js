@@ -82,19 +82,21 @@ function renderManufacturers() {
   data = loadData();
   manufacturerList.innerHTML = '';
   if (data.manufacturers.length === 0) {
-    manufacturerList.innerHTML = '<p class="empty-state">Keine Hersteller vorhanden. Bitte im Admin-Modus hinzufügen.</p>';
+    manufacturerList.innerHTML = '<p>Keine Hersteller vorhanden. Bitte im Admin-Modus hinzufügen.</p>';
     return;
   }
 
   for (const manufacturer of data.manufacturers) {
     const item = document.createElement('article');
-    item.className = 'manufacturer-item';
+    item.className = 'manufacturer-card';
     item.innerHTML = `
-      <a href="manufacturer.html?id=${manufacturer.id}">${manufacturer.name}</a>
-      <p class="muted">${manufacturer.columns.length} Spalten · ${manufacturer.rows.length} Einträge</p>
-      <div class="table-actions">
-        <a class="secondary-button" href="manufacturer.html?id=${manufacturer.id}">Details öffnen</a>
-        ${isAdmin() ? '<button class="primary-button danger-button" type="button" data-delete>Hersteller löschen</button>' : ''}
+      <div>
+        <h3>${manufacturer.name}</h3>
+        <p>${manufacturer.columns.length} Spalten · ${manufacturer.rows.length} Einträge</p>
+      </div>
+      <div class="actions">
+        <a class="button" href="manufacturer.html?id=${manufacturer.id}">Öffnen</a>
+        ${isAdmin() ? '<button class="button button-danger" data-delete>Entfernen</button>' : ''}
       </div>
     `;
 
@@ -118,10 +120,7 @@ function updateAdminUI() {
   const admin = isAdmin();
   adminStatus.textContent = admin ? 'Admin-Modus aktiv' : 'Admin-Modus inaktiv';
   adminButton.textContent = admin ? 'Admin-Modus beenden' : 'Admin-Login';
-  const fieldset = manufacturerForm.querySelector('fieldset');
-  if (fieldset) {
-    fieldset.disabled = !admin;
-  }
+  manufacturerForm.querySelector('fieldset').disabled = !admin;
   renderManufacturers();
 }
 
